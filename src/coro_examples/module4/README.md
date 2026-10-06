@@ -1,5 +1,5 @@
 # C++ package used to control the Lynxmotion AL5D simulator in Gazebo
-This package is used to control the simulated version of the [Lynxmotion AL5D robotic arm](http://www.lynxmotion.com/c-130-al5d.aspx) that can be used for various simulation exercises such as picking and placing [Lego bricks](https://www.lego.com/en-us/product/buildable-2x4-red-brick-5006085). For the simulated version of the robotic arm, the C++ package works in conjunction with the [lynxmotion_al5d_description](https://github.com/CRAM-Team/lynxmotion_al5d_description) package that contains the robot model which can be viewed by running a simulation in [Gazebo](http://gazebosim.org/). In order to view the robotic arm and to access services such as spwaning the Lego bricks please follow the documentation provided in the [lynxmotion_al5d_description](https://github.com/CRAM-Team/lynxmotion_al5d_description) package.
+This package is used to control the simulated version of the [Lynxmotion AL5D robotic arm](http://www.lynxmotion.com/c-130-al5d.aspx) that can be used for various simulation exercises such as picking and placing [Lego bricks](https://www.lego.com/en-us/product/buildable-2x4-red-brick-5006085). For the simulated version of the robotic arm, the C++ package works in conjunction with the [lynxmotion_al5d_description](https://github.com/cognitive-robotics-course/lynxmotion_al5d_description) package that contains the robot model which can be viewed by running a simulation in [Gazebo](http://gazebosim.org/). In order to view the robotic arm and to access services such as spwaning the Lego bricks please follow the documentation provided in the [lynxmotion_al5d_description](https://github.com/cognitive-robotics-course/lynxmotion_al5d_description) package.
 
 The image below shows the simulated Lynxmotion AL5D robotic arm grasping a red Lego brick.
 
@@ -12,7 +12,16 @@ The image below shows the simulated Lynxmotion AL5D robotic arm grasping a red L
 3. [Running the example code](#running-the-example-code)
 
 ### Gazebo simulator
-Please refer to the [lynxmotion_al5d_description](https://github.com/CRAM-Team/lynxmotion_al5d_description) package to launch the Gazebo simulation enviroment and to access the services in the simulator such as spawning a Lego brick or resetting the workspace.
+Please refer to the [lynxmotion_al5d_description](https://github.com/cognitive-robotics-course/lynxmotion_al5d_description) package (`lynxmotion_al5d_description` in this workspace) to launch the Gazebo simulation enviroment and to access the services in the simulator such as spawning a Lego brick or resetting the workspace:
+
+```
+ros2 launch lynxmotion_al5d_description sim.launch.py
+ros2 run lynxmotion_al5d_description spawn_brick -c red -x 0.1 -y 0.15
+```
+
+The programs control the real robot unless the configuration file contains `SIMULATOR TRUE`. `robot_simulator_config.txt` is the simulator variant of `robot_1_config.txt`; name it on the first line of the input file to run in Gazebo. To use your own input files without editing the installed ones, set `CORO_DATA_DIR_MODULE4` to a directory that contains them.
+
+The simulated gripper does not yet pick up the brick reliably (see MIGRATION.md in the repository root); the arm does move to it.
 
 ### Input
 The input files are found in the data directory. The first line of the input file comprises a filename for the robot configuration file. The second line contains four numbers corresponding to the x, y and z coordinates of the Lego brick and its orientation Ø in degrees. The final line contains the x, y and z coordinates of the destination location and its orientation Ø. The sample input is shown below:

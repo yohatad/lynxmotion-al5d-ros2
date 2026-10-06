@@ -1,5 +1,5 @@
 # C++ package to support Module 2 on writing ROS software in C++: publishers, subscribers, services.
-This package is implements the four examples in Module 2, Lecture 2, which involves the creation of a new  package, agitr, with four ROS nodes:
+This package implements the four examples in Module 2, Lecture 2, which involve the creation of a new package, agitr, with four ROS 2 nodes:
 
 - hello
 - pubvel
@@ -10,36 +10,36 @@ Please refer to Lecture 2 for details on the functionality of each of these node
 
 ## Running the example code
 
-As always, make sure the ROS master is running:
+ROS 2 needs no master process: there is no `roscore`. Every terminal needs ROS 2 and the workspace sourced (done automatically inside the Docker image).
 
-`roscore`
+Open a terminal and enter
 
-Open a second terminal and enter
-
-`rosrun module2 hello`
+`ros2 run module2 hello`
 
 to see the Hello World message.
 
 Then enter
 
-`rosrun turtlesim turtlesim_node`
+`ros2 run turtlesim turtlesim_node`
 
-Open a third terminal and enter
+Open a second terminal and enter
 
-`rosrun module2 pubvel`
+`ros2 run module2 pubvel`
 
 to publish random linear and angular command velocities and see the turtle wander about the simulator environment.
 
-Open a fourth terminal and enter
+Open a third terminal and enter
 
-`rosrun module2 subpose`
+`ros2 run module2 subpose`
 
-to see the pose values published on the turtleX/Pose topic, where X stands for the turtle number.
+to see the pose values published on the turtleX/pose topic, where X stands for the turtle number.
 
 Enter <ctrl>-c to stop the pubvel and subpose nodes.
 
 Enter
 
-`rosrun module2 useservices`
+`ros2 run module2 useservices`
 
 to use the example services to clear the simulator and teleport the turtle.
+
+The turtlesim window needs a display; see the main README for how to set one up in Docker.

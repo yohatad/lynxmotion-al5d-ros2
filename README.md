@@ -100,11 +100,13 @@ Same through `docker compose run --rm test`.
 * `module11` is a rewrite, not a port: the Lisp CRAM it was written for is archived. It is now a Python tutorial on CoraPlex (see `src/coro_examples/module11/README.md`), in its own optional image (`docker compose --profile cram ...`), because CoraPlex adds several GB of dependencies.
 * `robotCameraModelDataSimulator` of module 5 was already disabled in the original build and is not shipped.
 
-## GPU rendering (NVIDIA, optional, untested)
+## GPU rendering (NVIDIA, optional)
 
 The default service renders in software (`LIBGL_ALWAYS_SOFTWARE=1`), which is slow for Gazebo. The `rpp-gpu`
-service uses an NVIDIA GPU. It was written from the Docker and WSLg documentation and **not tested**: no NVIDIA GPU
-was available. Docker Desktop on Windows with VcXsrv cannot use the GPU for rendering; use WSL 2 (WSLg) or Linux.
+service uses an NVIDIA GPU. On WSL 2 (Windows 11, NVIDIA RTX 4070 laptop GPU) the renderer was confirmed to be the
+NVIDIA GPU through D3D12 (`glxinfo`); the speed of the Gazebo GUI was not measured. The Linux host variant was written
+from the Docker documentation and **not tested**. Docker Desktop on Windows with VcXsrv cannot use the GPU for
+rendering; use WSL 2 (WSLg) or Linux.
 
 ```bash
 # Linux host (NVIDIA driver + NVIDIA Container Toolkit)

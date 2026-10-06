@@ -31,15 +31,11 @@ The current turtle pose is sensed by subscribing to the turtle1/pose topic. The 
 
 ### Running the example code
 
-ROS 2 needs no master process.
-
-(not needed in ROS 2)
-
-Open a second terminal and enter
+ROS 2 needs no master process (there is no `roscore`). Open a terminal and enter
 
 `ros2 run turtlesim turtlesim_node`
 
-Open a third terminal and enter
+Open a second terminal and enter
 
 `ros2 run module3 goToPosition`
 
