@@ -1,0 +1,4 @@
+lynxmotion_al5d_description/Pose pose  # The required change in pose from the current brick pose
+---
+bool success
+string message

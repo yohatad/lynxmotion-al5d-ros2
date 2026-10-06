@@ -1,0 +1,4 @@
+string name   # The name of the block in the workspace
+---
+bool result   # True when the operation was successful
+string message # Explains the status

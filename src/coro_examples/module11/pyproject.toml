@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "module11"
+version = "1.0.0"
+description = "Tutorial: the Lynxmotion AL5D with CoraPlex (ROS 2 Jazzy replacement for the Lisp CRAM module 11)"
+requires-python = ">=3.12"
+license = { text = "BSD-3-Clause" }
+# CoraPlex and its dependencies come from the cognitive_robot_abstract_machine monorepo
+# (see the README); the kinematics module needs nothing at all.
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+module11-pick-and-place = "module11.pick_and_place:main"
+
+[tool.setuptools]
+packages = ["module11"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

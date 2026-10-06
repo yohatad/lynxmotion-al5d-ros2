@@ -1,0 +1,74 @@
+services:
+  rpp:
+    build: .
+    image: rpp-jazzy
+    container_name: rpp-jazzy
+    stdin_open: true
+    tty: true
+    environment:
+      # GUI (Gazebo client, RViz) through an X server on the host.
+      #   Windows + VcXsrv/X410: DISPLAY=host.docker.internal:0.0
+      #   Linux:                 DISPLAY=${DISPLAY} and mount /tmp/.X11-unix (see README)
+      - DISPLAY=${DISPLAY:-host.docker.internal:0.0}
+      - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-1}   # software rendering; the rpp-gpu service turns it off
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+    volumes:
+      - ./my_packages:/home/rpp/workspace/src/my_packages   # your own packages, edited on the host
+    # Physical robots (Linux, or Windows through usbipd-win; see README). Uncomment when the
+    # device exists on the Docker host:
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0     # Create 2 (FTDI FT231X) or AL5D (FT232R)
+    #   - /dev/video0:/dev/video0       # USB camera
+
+  test:
+    build: .
+    image: rpp-jazzy
+    command: test
+    shm_size: 1gb
+    profiles: ["test"]
+
+  cram:
+    # Module 11: the course image plus CoraPlex. Build "rpp" first, then:
+    #   docker compose --profile cram build cram
+    #   docker compose --profile cram run --rm cram test
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cram
+    image: rpp-jazzy-cram
+    shm_size: 1gb
+    stdin_open: true
+    tty: true
+    profiles: ["cram"]
+
+  rpp-gpu:
+    # Same as "rpp" but renders on an NVIDIA GPU (UNTESTED: no NVIDIA GPU was available).
+    # Needs the NVIDIA driver, and on Linux hosts the NVIDIA Container Toolkit.
+    #   Linux host:   xhost +local:docker; DISPLAY=$DISPLAY docker compose --profile gpu run --rm rpp-gpu
+    #   WSL 2 (WSLg): docker compose --profile gpu run --rm rpp-gpu   (run from inside WSL)
+    extends:
+      service: rpp
+    profiles: ["gpu"]
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-wayland-0}
+      - XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
+      - LIBGL_ALWAYS_SOFTWARE=0
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      # WSL 2: export GALLIUM_DRIVER=d3d12 and MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA before
+      # running (passed through only when set; leave them unset on a Linux host)
+      - GALLIUM_DRIVER
+      - MESA_D3D12_DEFAULT_ADAPTER_NAME
+    volumes:
+      - ./my_packages:/home/rpp/workspace/src/my_packages
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+      - /usr/lib/wsl:/usr/lib/wsl
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, graphics, utility, compute]

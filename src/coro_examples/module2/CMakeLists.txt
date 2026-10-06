@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.8)
+project(module2)
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra)
+endif()
+
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+find_package(turtlesim REQUIRED)
+
+foreach(example hello pubvel subpose useservices)
+  add_executable(${example} src/${example}.cpp)
+  ament_target_dependencies(${example} rclcpp geometry_msgs std_srvs turtlesim)
+  install(TARGETS ${example} DESTINATION lib/${PROJECT_NAME})
+endforeach()
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  find_package(ament_cmake_pytest REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
+  set(ament_cmake_copyright_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_uncrustify_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+
+  add_launch_test(test/test_examples.py TIMEOUT 240 ENV ROS_DOMAIN_ID=46)
+endif()
+
+ament_package()

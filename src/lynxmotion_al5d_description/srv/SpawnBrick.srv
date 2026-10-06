@@ -1,0 +1,7 @@
+string color    # Color of the block (red, blue or green)
+string name     # Optional name for the brick (auto-generated when empty)
+lynxmotion_al5d_description/Pose pose # Pose of the object to be spawned
+---
+string name     # Name of the brick in the workspace
+bool success    # True when the brick was spawned
+string message  # Explains the failure when success is false

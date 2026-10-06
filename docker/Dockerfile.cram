@@ -1,0 +1,49 @@
+# Optional image for module 11: the course image plus CoraPlex, the Python successor of CRAM.
+#
+#   docker compose build rpp            # the course image first
+#   docker compose --profile cram build cram
+#   docker compose --profile cram run --rm cram test       # module 11 tests
+#   docker compose --profile cram run --rm cram tutorial   # pick and place in CoraPlex
+#
+# CoraPlex lives in the cognitive_robot_abstract_machine monorepo (Python 3.12, ROS 2 Jazzy). It is
+# kept out of the main image because it is large: several GB of Python packages and the ROS
+# workspace (PR2 descriptions, maps) that its tests and URDF loading need.
+ARG BASE=rpp-jazzy
+FROM ${BASE}
+
+ARG CRAM_REF=0c5a90f8c1c91cb3ab030a4daf1c3beef75d166a
+ARG DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
+USER rpp
+WORKDIR /home/rpp
+
+RUN sudo apt-get update \
+    && sudo apt-get install -y --no-install-recommends python3-venv graphviz graphviz-dev libgraphviz-dev curl \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# CoraPlex at a pinned commit, with its submodules
+RUN git init cram && cd cram \
+    && git remote add origin https://github.com/cram2/cognitive_robot_abstract_machine.git \
+    && git fetch --depth 1 origin "${CRAM_REF}" && git checkout FETCH_HEAD \
+    && git submodule update --init --recursive --depth 1
+
+# Python environment (uv, as the project documents). The ROS 2 Python packages come from the
+# sourced ROS installation, hence --system-site-packages.
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH=/home/rpp/.local/bin:${PATH}
+RUN python3 -m venv --system-site-packages /home/rpp/cram-env \
+    && source /home/rpp/cram-env/bin/activate \
+    && cd cram && uv sync --extra dev --active
+
+# ROS workspace the project needs (PR2 description, maps, ...), built by its own script
+RUN cd cram && sudo -E OVERLAY_WS=/home/rpp/ros2_ws bash scripts/setup_ros_workspace.sh \
+    && sudo chown -R rpp:rpp /home/rpp/ros2_ws
+
+# The tutorial package
+COPY --chown=rpp:rpp src/coro_examples/module11 /home/rpp/module11
+RUN source /home/rpp/cram-env/bin/activate && uv pip install -e /home/rpp/module11
+
+COPY --chown=rpp:rpp scripts/entrypoint_cram.sh /home/rpp/entrypoint_cram.sh
+RUN chmod +x /home/rpp/entrypoint_cram.sh
+ENTRYPOINT ["/home/rpp/entrypoint_cram.sh"]
+CMD ["bash"]
