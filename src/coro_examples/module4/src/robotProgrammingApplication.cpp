@@ -58,7 +58,7 @@
 *   The simulator data specifies whether to use the simulator or the physical robot.  The key values are "TRUE" or "FALSE".
 *
 *   This code can also be compiled for ROS in which case a simulator for the robot can be controlled by publishing the joint angles on the
-*   the /lynxmotion_al5d/joints_positions/command topic.  The ROS code is conditionally compiles by defining flag in the interface file. 
+*   the /lynxmotion_al5d/joints_positions/commands topic.  The ROS code is conditionally compiles by defining flag in the interface file. 
 *
 *   David Vernon, Carnegie Mellon University Africa
 *   25 April 2018
@@ -69,7 +69,7 @@
 *   28 June 2020:  re-factored code to separate calculation of the joint anglesusing the inverse kinematics,  
 *                  from the calculation of servomotor setpoint values.  
 *                  This was done to allow the simulator to be controlled by publishing joint angles on the 
-*                  ROS /lynxmotion_al5d/joints_positions/command topic 
+*                  ROS /lynxmotion_al5d/joints_positions/commands topic 
 *
 *   21 March 2021: Changed the initialization of the E frame to use the x, y, and z values read from the configuration file,
 *                  not just the z value

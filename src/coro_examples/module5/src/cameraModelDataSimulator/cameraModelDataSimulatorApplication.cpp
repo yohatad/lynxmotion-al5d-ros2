@@ -41,7 +41,7 @@
   Before running this application ensure that the calibration grid is not occluded by the robot. A
   program that moves the robot out of the field of view of the camera is provided as part of module5 of coro_examples
   repository (https://github.com/cognitive-robotics-course/coro_examples) and can be run by the command
-  'rosrun module5 moveRobot'
+  'ros2 run module5 moveRobot'
 
   It is assumed that the input file is located in a data directory given by the path ../data/
   defined relative to the location of source code for this application.

@@ -24,7 +24,7 @@
  *   28 June 2020:     re-factored code to separate calculation of the joint angles using the inverse kinematics,  
  *                     from the calculation of servomotor setpoint values.  
  *                     This was done to allow the simulator to be controlled by publishing joint angles on the 
- *                     ROS /lynxmotion_al5d/joints_positions/command topic 
+ *                     ROS /lynxmotion_al5d/joints_positions/commands topic 
  *
  *   11 February 2022: Added simulator field to robotConfigurationData
  *                     Created this lynxmotionUtilities.cpp file; previously these utilities were embedded in the 
@@ -739,7 +739,7 @@ static bool publishArmCommand() {
    
    Servo the robot by setting the joint angles.
 
-   If using ROS, this is effected by publishing the joint angles on the /lynxmotion_al5d/joints_positions/command topic 
+   If using ROS, this is effected by publishing the joint angles on the /lynxmotion_al5d/joints_positions/commands topic 
 
    If not using ROS but controlling the robot directly from either Ubuntu or  Windows, this is effected by 
    transforming from joint angles to servo position values and writing the servo position values to the COM port
@@ -776,7 +776,7 @@ bool setJointAngles(double joint_angles[]) {
       /* Direct control of the physical robot */
       /* ------------------------------------ */
 
-      /*** this code needs to be moved to a dedicated lynxmotionController node which will subscribe to the /lynxmotion_al5d/joints_positions/command topic (see above) ***/
+      /*** this code needs to be moved to a dedicated lynxmotionController node which will subscribe to the /lynxmotion_al5d/joints_positions/commands topic (see above) ***/
       /*** we can then run either the lynxmotion simulator or the lynxmotionController depending on whether we are using the simulator or the real robot                ***/
       /*** better still, move the inverse kinematics too and publish a pose (vector & quaternion) instead of the joint angles                                           ***/
 
@@ -893,7 +893,7 @@ void grasp(int d) { // d is distance between finger tips:  0 <= d <= 30 mm
   
       /* direct control of physical robot */
 
-      /*** this code needs to be moved to a dedicated lynxmotionController node which will subscribe to the /lynxmotion_al5d/joints_positions/command topic (see above) ***/
+      /*** this code needs to be moved to a dedicated lynxmotionController node which will subscribe to the /lynxmotion_al5d/joints_positions/commands topic (see above) ***/
       /*** we can then run either the lynxmotion simulator or the lynxmotionController depending on whether we are using the simulator or the real robot                ***/
       /*** better still, move the inverse kinematics too and publish a pose (vector & quaternion) instead of the joint angles                                           ***/
 

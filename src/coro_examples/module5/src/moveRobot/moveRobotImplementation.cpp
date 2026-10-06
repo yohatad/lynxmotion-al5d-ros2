@@ -673,7 +673,7 @@ bool computeJointAngles(double x, double y, double z, double pitch_angle_d, doub
    
    Servo the robot by setting the joint angles.
 
-   If using ROS, this is effected by publishing the joint angles on the /lynxmotion_al5d/joints_positions/command topic 
+   If using ROS, this is effected by publishing the joint angles on the /lynxmotion_al5d/joints_positions/commands topic 
 
    If not using ROS but controlling the robot from Windows, this is effected by 
    transforming from joint angles to servo position values and writing the servo position values to the COM port
