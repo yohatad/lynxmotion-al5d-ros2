@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build image
-        working-directory: jazzy
         run: docker build -t rpp-jazzy .
       - name: Build and test everything (including the Gazebo simulation tests)
         run: docker run --rm --shm-size=1g rpp-jazzy test
