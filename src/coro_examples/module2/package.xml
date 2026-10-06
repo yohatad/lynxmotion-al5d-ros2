@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>module2</name>
+  <version>1.0.0</version>
+  <description>Package for Introduction to Cognitive Robotics, Module 2 (ROS 2 Jazzy port)</description>
+  <maintainer email="david@vernon.eu">David Vernon</maintainer>
+  <license>BSD-3-Clause</license>
+  <url type="website">http://www.cognitiverobotics.net</url>
+  <author email="david@vernon.eu">David Vernon</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>std_srvs</depend>
+  <depend>turtlesim</depend>
+
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>launch_testing_ros</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

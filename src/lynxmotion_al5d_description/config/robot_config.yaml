@@ -1,0 +1,8 @@
+# Default joint positions for the joint_state_publisher (display.launch.py)
+zeros:
+  Joint1: 0.0
+  Joint2: 1.57
+  Joint3: -1.57
+  Joint4: 0.0
+  Joint5: 0.0
+  Gripper: 0.025

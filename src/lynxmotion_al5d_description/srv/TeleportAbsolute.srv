@@ -1,0 +1,4 @@
+lynxmotion_al5d_description/Pose pose  # The new pose of the brick
+---
+bool success
+string message
